@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fish Weight Prediction</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Fish Weight Prediction</h2>
+        <form id="prediction-form">
+            <div class="input-group">
+                <label for="length1">Length1:</label>
+                <input type="number" id="length1" name="length1" required>
+            </div>
+            <div class="input-group">
+                <label for="length2">Length2:</label>
+                <input type="number" id="length2" name="length2" required>
+            </div>
+            <div class="input-group">
+                <label for="length3">Length3:</label>
+                <input type="number" id="length3" name="length3" required>
+            </div>
+            <div class="input-group">
+                <label for="height">Height:</label>
+                <input type="number" id="height" name="height" required>
+            </div>
+            <div class="input-group">
+                <label for="width">Width:</label>
+                <input type="number" id="width" name="width" required>
+            </div>
+            <div class="input-group">
+                <label for="species">Species:</label>
+                <input type="number" id="species" name="species" required>
+            </div>
+            <button type="submit">Predict Weight</button>
+        </form>
+        <h3 id="result"></h3>
+    </div>
+    <script>
+        document.getElementById('prediction-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const length1 = document.getElementById('length1').value;
+            const length2 = document.getElementById('length2').value;
+            const length3 = document.getElementById('length3').value;
+            const height = document.getElementById('height').value;
+            const width = document.getElementById('width').value;
+            const species = document.getElementById('species').value;
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    length1: length1,
+                    length2: length2,
+                    length3: length3,
+                    height: height,
+                    width: width,
+                    species: species,
+                }),
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = `Predicted Weight: ${result.weight}`;
+        });
+    </script>
+</body>
+</html>
